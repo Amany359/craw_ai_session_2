@@ -4,9 +4,13 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 from dotenv import load_dotenv
-
+from pydantic import BaseMode
 load_dotenv()
-
+# 1️⃣ نعرف الـ Pydantic Model
+class Report(BaseModel):
+    title: str
+    summary: str
+    keywords: list[str]
 @CrewBase
 class MyCrew:
     """MyCrew crew"""
@@ -46,6 +50,7 @@ class MyCrew:
     def reporting_task(self) -> Task:
         return Task(
             config=self.tasks_config['reporting_task'],  # type: ignore[index]
+            output_pydantic=Report,
             output_file='report.md'
         )
 
